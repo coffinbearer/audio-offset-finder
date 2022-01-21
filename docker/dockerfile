@@ -1,0 +1,7 @@
+FROM ubuntu
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt update
+RUN apt install python3 git pip ffmpeg  -y
+RUN pip3 install --user git+https://github.com/flutterfromscratch/audio-offset-finder.git
+RUN pip install NumPy==1.21
+RUN apt install libsndfile1
