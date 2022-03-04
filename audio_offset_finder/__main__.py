@@ -62,7 +62,7 @@ audio file (scope), and replace the video sound automaticlly.
     parser.add_argument('--offset', metavar='Minutes', type=int, default=0, help='Neglect how many minutes of the audio (in case your audio is very long)')
     parser.add_argument('--trim', metavar='Minutes', type=int, default=15, help='Using how many minutes of audio as one clip to analyse with')
     parser.add_argument('--sr', metavar='SampleRate', type=int, default=16000, help='When resample audio, what the target sample rate should be')
-    parser.add_argument('--format', metavar='Format', type=str, default='mp4', help='Output audio format such as: mp4, mkv')
+    parser.add_argument('--format', metavar='Format', type=str, default='mkv', help='Output audio format such as: mp4, mkv')
     parser.add_argument('--not-generate',action='store_true', help='Do not use FFmpeg to generate new video')
     parser.add_argument('--plotit',action='store_true', help='Show the plot picture of the analyse')
 
@@ -100,10 +100,10 @@ def sync(within, find_offset_of, offset, trim, sr, format, not_generate, plotit)
 
     # ffmpeg command
     if offset >= 0:
-        ffmpeg_cmd = f'''ffmpeg -y -hide_banner -i "{find_offset_of}" -ss {offset} -i "{within}" -map 0:v:0 -map 1:a:0  -c:v copy -shortest "{find_offset_of}.sync.{"{:.2f}".format(offset)}.{format}"'''
+        ffmpeg_cmd = f'''ffmpeg -y -hide_banner -i "{find_offset_of}" -ss {offset} -i "{within}" -map 0:v:0 -map 1:a:0  -c:v copy -c:a copy -shortest "{find_offset_of}.sync.{"{:.2f}".format(offset)}.{format}"'''
     else:
         delay = int(abs(offset) * 1000)
-        ffmpeg_cmd = f'''ffmpeg -y -hide_banner -i "{find_offset_of}" -i "{within}" -map 0:v:0 -map 1:a:0 -c:v copy -af "adelay=delays={delay}:all=1" -shortest "{find_offset_of}.sync.{"{:.2f}".format(offset)}.{format}"'''
+        ffmpeg_cmd = f'''ffmpeg -y -hide_banner -i "{find_offset_of}" -i "{within}" -map 0:v:0 -map 1:a:0 -c:v copy -c:a copy -af "adelay=delays={delay}:all=1" -shortest "{find_offset_of}.sync.{"{:.2f}".format(offset)}.{format}"'''
     print(f'FFmpeg command：\n    {ffmpeg_cmd}\n')
 
     # Generate new video
