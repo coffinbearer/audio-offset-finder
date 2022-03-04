@@ -54,7 +54,7 @@ def get_audio(file, sr=16000):
 
     mfcca = mfcc(a, nwin=256, n_fft=512, sr=sr, n_mfcc=26)[0]
     mfcca = std_mfcc(mfcca)
-    rmsa = librosa.feature.rms(a)
+    rmsa = librosa.feature.rms(y=a)
     cent = librosa.feature.spectral_centroid(y=a, sr=sr)
     rolloff = librosa.feature.spectral_rolloff(y=a, sr=sr, roll_percent=0.1)
 
